@@ -217,7 +217,7 @@ export default function PokemonTable() {
                 </TableContainer>
                 {!loading && !connectionErr && data.length > 0 && (
                     <PokemonTablePagination
-                        count={data.length}
+                        count={filteredData.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         handleChangePage={handleChangePage}
