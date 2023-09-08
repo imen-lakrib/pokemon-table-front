@@ -1,8 +1,8 @@
-import PokemonPage from "./pages/PokemonPage.jsx";
+import PokemonTable from "./components/PokemonTable.jsx";
 
 function App() {
   return <>
-    <PokemonPage />
+    <PokemonTable />
   </>;
 }
 
