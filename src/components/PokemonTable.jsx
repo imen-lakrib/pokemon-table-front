@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 
 // material mui
 import {
@@ -21,39 +20,34 @@ import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
+// utils
 import { TableHeadTitles, ROWS_PER_PAGE } from '../utils/data'
+import { fetchPokemonData } from '../utils/fetchPokemonData';
 
+
+// components
 import PokemonCard from './PokemonCard';
 import PokemonTableHeader from './PokemonTableHeader';
 import PokemonTablePagination from './PokemonTablePagination';
-import { API } from '../utils/api';
 import FilterComponent from './FilterComponent';
 
 
-
-
 export default function PokemonTable() {
-
-    //table UI
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(ROWS_PER_PAGE);
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
-    const [connectionErr, setConnectionErr] = useState(false)
-    const [search, setSearch] = useState('')
-    const [power, setPower] = useState('')
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, ROWS_PER_PAGE));
-        setPage(0);
-    };
 
     const [data, setData] = useState([]);
     const [minPower, setMinPower] = useState(null);
     const [maxPower, setMaxPower] = useState(null);
     const [loading, setLoading] = useState(false)
+
+    //table UI
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(ROWS_PER_PAGE);
+    const [connectionErr, setConnectionErr] = useState(false)
+    const [search, setSearch] = useState('')
+    const [power, setPower] = useState('')
+    const [isPowerExiste, SetIsPowerExiste] = useState(true)
+
+
 
     const filters = [
         {
@@ -82,43 +76,38 @@ export default function PokemonTable() {
     ]
 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
 
-            try {
-                const response = await axios.get(API);
-                // Calculate power for each Pokemon and add it to the data
-                const updatedData = response.data.map((pokemon) => ({
-                    ...pokemon,
-                    power:
-                        pokemon.hp +
-                        pokemon.attack +
-                        pokemon.defense +
-                        pokemon.special_attack +
-                        pokemon.special_defense +
-                        pokemon.speed,
-                }));
-                setData(updatedData);
-                setConnectionErr(false);
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
-            } catch (error) {
-                setConnectionErr(true);
-            }
-            finally {
-                setLoading(false);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
-            }
-        };
-
-        fetchData();
-    }, []);
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, ROWS_PER_PAGE));
+        setPage(0);
+    };
 
 
     const filteredData = data.filter((pokemon) =>
         pokemon.name.toLowerCase().includes(search.toLowerCase()) &&
         (!power || pokemon.power >= parseInt(power))
     );
+
+
+
+
+
+
+
+    useEffect(() => {
+        fetchPokemonData(setData, setLoading, setConnectionErr);
+    }, []);
+
+
+
+
+
     useEffect(() => {
         // Filter and paginate the data for the current page
 
@@ -129,6 +118,8 @@ export default function PokemonTable() {
         // Calculate the min and max power for the current page
         const pagePowers = paginatedData.map((pokemon) => pokemon.power);
         if (pagePowers.length > 0) {
+            SetIsPowerExiste(true)
+
             const min = Math.min(...pagePowers);
             const max = Math.max(...pagePowers);
             setMinPower(min);
@@ -136,6 +127,7 @@ export default function PokemonTable() {
         } else {
             setMinPower(null);
             setMaxPower(null);
+            SetIsPowerExiste(false)
         }
     }, [data, page, rowsPerPage, search, filteredData]);
 
@@ -158,15 +150,19 @@ export default function PokemonTable() {
 
 
                     <Box>
-                        {powers.map((power, index) => {
-                            return (
-                                <Typography key={index}>
-                                    {power.name} Power: {power.value}
-                                </Typography>
-                            )
-                        })}
-                    </Box>
 
+
+
+                        {isPowerExiste ?
+                            powers.map((power, index) => {
+                                return (
+                                    <Typography key={index}>
+                                        {power.name} Power: {power.value}
+                                    </Typography>
+                                )
+
+                            }) : (<Typography>there is no data to calculate min and max power</Typography>)}
+                    </Box>
 
                 </Paper>
             </Container>
@@ -229,6 +225,6 @@ export default function PokemonTable() {
                     />
                 )}
             </Container>
-        </Container>
+        </Container >
     );
 }

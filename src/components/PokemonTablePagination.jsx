@@ -1,5 +1,5 @@
 import TablePagination from '@mui/material/TablePagination';
-import PropTypes from 'prop-types';
+import { PokemonTablePaginationPropTypes } from '../utils/propsTypes';
 
 function PokemonTablePagination({ count, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage }) {
     return (
@@ -17,11 +17,7 @@ function PokemonTablePagination({ count, rowsPerPage, page, handleChangePage, ha
 }
 
 
-PokemonTablePagination.propTypes = {
-    count: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-    page: PropTypes.number.isRequired,
-    handleChangePage: PropTypes.func.isRequired,
-    handleChangeRowsPerPage: PropTypes.func.isRequired,
-};
+
+PokemonTablePagination.propTypes = PokemonTablePaginationPropTypes;
+
 export default PokemonTablePagination;

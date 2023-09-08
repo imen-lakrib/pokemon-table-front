@@ -1,7 +1,7 @@
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { TableHead } from "@mui/material";
-import PropTypes from 'prop-types';
+import { PokemonTableHeaderPropTypes } from "../utils/propsTypes";
 
 function PokemonTableHeader({ tableHeadTitles }) {
   return (
@@ -17,11 +17,8 @@ function PokemonTableHeader({ tableHeadTitles }) {
   );
 }
 
-PokemonTableHeader.propTypes = {
-  tableHeadTitles: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    align: PropTypes.oneOf(['center']),
-    name: PropTypes.string.isRequired,
-  })).isRequired,
-};
+
+
+PokemonTableHeader.propTypes = PokemonTableHeaderPropTypes;
+
 export default PokemonTableHeader;

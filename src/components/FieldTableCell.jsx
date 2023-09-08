@@ -1,5 +1,5 @@
 import { TableCell, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
+import { FieldTableCellPropTypes } from '../utils/propsTypes';
 
 
 const FieldTableCell = ({ value }) => {
@@ -12,8 +12,8 @@ const FieldTableCell = ({ value }) => {
     )
 }
 
-FieldTableCell.propTypes = {
-    value: PropTypes.string.isRequired,
-};
+
+FieldTableCell.propTypes = FieldTableCellPropTypes;
+
 
 export default FieldTableCell

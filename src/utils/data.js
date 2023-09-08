@@ -13,6 +13,6 @@ export const TableHeadTitles = [
 
 ]
 
-export const ROWS_PER_PAGE = 10;
+export const ROWS_PER_PAGE = TableHeadTitles.length;
 
 

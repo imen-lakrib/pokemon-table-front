@@ -1,5 +1,5 @@
 import { FormControl, IconButton, InputAdornment, OutlinedInput } from "@mui/material"
-import PropTypes from 'prop-types';
+import { FilterComponentPropTypes } from "../utils/propsTypes";
 
 const FilterComponent = ({ filter }) => {
     return (
@@ -23,13 +23,9 @@ const FilterComponent = ({ filter }) => {
     )
 }
 
-FilterComponent.propTypes = {
-    filter: PropTypes.shape({
-        placeholder: PropTypes.string.isRequired,
-        handleFilter: PropTypes.func.isRequired,
-        value: PropTypes.string.isRequired,
-        icon: PropTypes.node.isRequired,
-    }).isRequired,
-};
+
+
+FilterComponent.propTypes = FilterComponentPropTypes;
+
 
 export default FilterComponent
